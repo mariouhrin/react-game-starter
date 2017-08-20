@@ -144,7 +144,7 @@ class Game extends React.Component {
 
 Game.defaultProps = {
   maxWrongGuess: 2,
-  timeLimit: 3
+  timeLimit: 10
 }
 
 export default Game
