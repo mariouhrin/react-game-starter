@@ -8,7 +8,7 @@
     "start": "webpack-dev-server --progress --profile --colors",
     "lint": "eslint --ext js --ext jsx src || exit 0",
     "dev": " webpack-dashboard -- webpack-dev-server --progress --profile --colors",
-    "deploy": "surge --project ./public --domain react-memory-game.surge.sh"
+    "deploy": "npm run build && surge --project ./public --domain react-memory-game.surge.sh"
   },
   "repository": {
     "type": "git",
