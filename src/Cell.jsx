@@ -1,18 +1,21 @@
 import React from 'react';
 
+
 const isGuessCorrect = (props) => {
 
-  if (props.guessTrue.indexOf(props.id) !== -1) {
+  if (props.correctGuess.indexOf(props.id) !== -1) {
     return true
   }
-  if (props.guessFalse.indexOf(props.id) !== -1) {
+  if (props.incorrectGuess.indexOf(props.id) !== -1) {
     return false
   }
 
 }
 
+
 const handleCellClick = (props, isCellActive) => {
 
+	// next condition "isGuessCorrect(props) === undefined" is against duplication
   if (props.gameState == "recall" && isGuessCorrect(props) === undefined) {
     props.guessStates({
       isCellActive,
@@ -21,6 +24,7 @@ const handleCellClick = (props, isCellActive) => {
   }
 
 }
+
 
 const Cell = (props) => {
 

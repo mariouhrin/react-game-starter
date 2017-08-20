@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-const playAgainButton = (props) => {
+const playButton = (props) => {
 
   if (props.gameState === "start" && props.gameInstance === 1) {
     return (
@@ -29,29 +29,39 @@ const playAgainButton = (props) => {
 
 }
 
+
 const remainingCells = (props) => {
 
   if (props.gameState === "recall") {
     return (
-      <div>
-        Cells left: {props.activeCellsCount -  props.guessTrue.length}
+      <div className="v-space">
+        Remaining cells: {props.activeCellsCount -  props.correctGuess.length}
       </div>
     )
   }
 
 }
 
-const gameStateAliases = () => {
 
-  return {
+const renderScore = (props) => {
+	if (props.gameState === "lost") {
+		return (
+			<div className="v-space">
+				Your Score: {props.score}
+			</div>
+		)
+	}
+}
+
+
+const gameStateAliases = () => ({
     ready: "Get Ready",
     memorize: "Memorize",
-    recall: "Recall",
+    recall: "Try to recall",
     won: "Very Good !",
     lost: "Game Over !"
-  }
+})
 
-}
 
 const Footer = (props) => {
 
@@ -61,9 +71,10 @@ const Footer = (props) => {
     <div>
       <h2>
         {gameStates[props.gameState]}
-        {remainingCells(props)}
+      	{remainingCells(props)}
+				{renderScore(props)}
       </h2>
-      {playAgainButton(props)}
+      {playButton(props)}
     </div>
   )
 

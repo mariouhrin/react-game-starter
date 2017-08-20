@@ -9,39 +9,13 @@ module.exports = [
     loaders: ['style-loader', 'css-loader?importLoaders=1'],
     exclude: ['node_modules']
   },
-  {
-    test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-    exclude: /(node_modules|bower_components)/,
-    loader: "file-loader"
-  },
-  {
-    test: /\.(woff|woff2)$/,
-    exclude: /(node_modules|bower_components)/,
-    loader: "url-loader?prefix=font/&limit=5000"
-  },
-  {
-    test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-    exclude: /(node_modules|bower_components)/,
-    loader: "url-loader?limit=10000&mimetype=application/octet-stream"
-  },
-  {
-    test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-    exclude: /(node_modules|bower_components)/,
-    loader: "url-loader?limit=10000&mimetype=image/svg+xml"
-  },
-  {
-    test: /\.gif/,
-    exclude: /(node_modules|bower_components)/,
-    loader: "url-loader?limit=10000&mimetype=image/gif"
-  },
-  {
-    test: /\.jpg/,
-    exclude: /(node_modules|bower_components)/,
-    loader: "url-loader?limit=10000&mimetype=image/jpg"
-  },
-  {
-    test: /\.png/,
-    exclude: /(node_modules|bower_components)/,
-    loader: "url-loader?limit=10000&mimetype=image/png"
+	{
+    test: /\.(jpe?g|png|gif|svg)$/i,
+    loaders: [
+			'file-loader?hash=sha512&digest=hex&name=[hash].[ext]',
+			//'image-webpack-loader?bypassOnDebug&optimizationLevel=7&interlaced=false'
+			'image-webpack-loader?{gifsicle: {interlaced: true}, optipng: {optimizationLevel: 7}, pngquant:{quality: "65-90", speed: 4}, mozjpeg: {quality: 65}}'
+    ]
   }
+
 ];

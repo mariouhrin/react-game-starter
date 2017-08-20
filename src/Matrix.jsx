@@ -24,16 +24,17 @@ const Matrix = (props) => {
       ))
 
       matrixRow = []
+			let rowKey = (cell + 1) / props.columns
 
       return (
-        <div className="row" key={cell+1}>
+        <div className="row" key={rowKey}>
           {renderMatrixRow}
         </div>
       )
     }
   })
 
-  return <div className="grid" key="1">{matrixBoard}</div>
+  return <div className="grid">{matrixBoard}</div>
 
 }
 

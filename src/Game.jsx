@@ -11,8 +11,8 @@ class Game extends React.Component {
 
     this.state = {
       gameState: 'start',
-      guessTrue: [],
-      guessFalse: []
+      correctGuess: [],
+      incorrectGuess: []
     }
 
     let totalNumOfCells = this.props.rows * this.props.columns
@@ -52,28 +52,6 @@ class Game extends React.Component {
   }
 
 
-  guessStates({ isCellActive, cellID }) {
-
-    let { guessTrue, guessFalse, gameState } = this.state
-
-    if (isCellActive) {
-        guessTrue.push(cellID)
-        if (guessTrue.length === this.props.activeCellsCount) {
-          gameState = this.finishGame("won")
-        }
-    }
-    else {
-        guessFalse.push(cellID)
-        if (guessFalse.length > this.props.maxWrongGuess) {
-          gameState = this.finishGame("lost")
-        }
-    }
-
-    this.setState({ guessTrue, guessFalse, gameState })
-
-  }
-
-
   startRecallMode() {
 
     this.setState({ gameState: "recall" }, () => {
@@ -90,6 +68,28 @@ class Game extends React.Component {
   }
 
 
+  guessStates({ isCellActive, cellID }) {
+
+    let { correctGuess, incorrectGuess, gameState } = this.state
+
+    if (isCellActive) {
+        correctGuess.push(cellID)
+        if (correctGuess.length === this.props.activeCellsCount) {
+          gameState = this.finishGame("won")
+        }
+    }
+    else {
+        incorrectGuess.push(cellID)
+        if (incorrectGuess.length > this.props.maxWrongGuess) {
+          gameState = this.finishGame("lost")
+        }
+    }
+
+    this.setState({ correctGuess, incorrectGuess, gameState })
+
+  }
+
+
   componentWillUnmount() {
 
     clearTimeout(this.memorizedTimer)
@@ -102,6 +102,14 @@ class Game extends React.Component {
   finishGame(gameState) {
 
     clearInterval(this.gameInterval)
+
+		// pass values to calculate final score in Container component
+		if (["won", "lost"].indexOf(gameState) !== -1) {
+			let rows = this.props.rows
+			let { correctGuess, incorrectGuess } = this.state
+			this.props.calculateScore({ correctGuess, incorrectGuess, gameState, rows })
+		}
+
     return gameState
 
   }
@@ -112,8 +120,6 @@ class Game extends React.Component {
     // do the calculations only once and pass it to the Cell component
     let showActiveCells = ["memorize", "lost"].indexOf(this.state.gameState) !== -1
 
-    // check current gameState for Container component
-    this.props.checkGameState(this.state.gameState)
 
     return (
       <div className="grid">
@@ -127,9 +133,7 @@ class Game extends React.Component {
         />
         <Footer
           {...this.state}
-          activeCellsCount={this.props.activeCellsCount}
-          createNewGame={this.props.createNewGame}
-          gameInstance={this.props.gameInstance}
+					{...this.props}
           startGame={this.startGame}
         />
       </div>
@@ -140,7 +144,7 @@ class Game extends React.Component {
 
 Game.defaultProps = {
   maxWrongGuess: 2,
-  timeLimit: 10
+  timeLimit: 3
 }
 
 export default Game
